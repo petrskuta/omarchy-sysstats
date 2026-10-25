@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "petrskuta.sysstats",
   "name": "System Stats",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Petr Skuta",
   "description": "Minimal CPU, RAM, GPU, network and power readout. Click to open btop.",
   "kinds": ["bar-widget"],

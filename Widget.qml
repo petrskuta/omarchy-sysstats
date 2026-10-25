@@ -34,10 +34,12 @@ BarWidget {
   implicitWidth: visible ? content.implicitWidth + Style.space(12) : 0
   implicitHeight: barSize
 
+  // Always K or M, never B: under 1K shows one decimal, such as 0.3K.
   function rate(bytes) {
-    if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + "M"
-    if (bytes >= 1024) return Math.round(bytes / 1024) + "K"
-    return bytes + "B"
+    var kb = bytes / 1024
+    if (kb >= 1023.5) return (kb / 1024).toFixed(1) + "M"
+    if (kb >= 1) return Math.round(kb) + "K"
+    return bytes > 0 ? kb.toFixed(1) + "K" : "0K"
   }
 
   function apply(line) {
