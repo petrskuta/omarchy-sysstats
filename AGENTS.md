@@ -48,7 +48,7 @@ omarchy plugin validate .              # check manifest.json against the schema
 # Saving a file hot-reloads the widget. If it does not:
 omarchy-shell shell rescanPlugins
 journalctl --user --since "-1min" | grep -iE "sysstats|warn|error"   # QML errors
-grim -o eDP-1 /tmp/full.png            # screenshot to confirm the result visually
+grim /tmp/full.png                     # screenshot of the active screen, to check visually
 ```
 
 A `quickshell.qmlscanner ... outside of the config folder` warning is harmless
