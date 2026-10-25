@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "petrskuta.sysstats",
+  "name": "System Stats",
+  "version": "1.0.0",
+  "author": "Petr Skuta",
+  "description": "Minimal CPU, RAM, GPU, network and power readout. Click to open btop.",
+  "kinds": ["bar-widget"],
+  "entryPoints": { "barWidget": "Widget.qml" },
+  "barWidget": {
+    "displayName": "System Stats",
+    "description": "CPU, RAM, GPU, network and power at a glance",
+    "category": "System",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}
