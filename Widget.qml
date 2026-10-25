@@ -24,7 +24,8 @@ BarWidget {
       { icon: 0xEFC5, value: stats.ram + "%" }
     ]
     if (stats.gpu >= 0) list.push({ icon: 0xF08AE, value: stats.gpu + "%" })
-    list.push({ icon: 0xF04E1, value: "↓" + rate(stats.down) + " ↑" + rate(stats.up) })
+    // Padded to a fixed width (the font is monospace) so the bar does not shift.
+    list.push({ icon: 0xF04E1, value: ("↓" + rate(stats.down)).padEnd(5, "\u2007") + " " + ("↑" + rate(stats.up)).padEnd(5, "\u2007") })
     if (stats.powerUw >= 0)
       list.push({ icon: charging ? 0xF06A5 : 0xF140B, value: (stats.powerUw / 1e6).toFixed(1) + "W" })
     return list
@@ -34,10 +35,12 @@ BarWidget {
   implicitWidth: visible ? content.implicitWidth + Style.space(12) : 0
   implicitHeight: barSize
 
-  // Always K or M, never B: under 1K shows one decimal, such as 0.3K.
+  // Always K or M, never B, and at most four characters: 0.3K, 512K, 1.2M, 34M.
   function rate(bytes) {
     var kb = bytes / 1024
-    if (kb >= 1023.5) return (kb / 1024).toFixed(1) + "M"
+    var mb = kb / 1024
+    if (mb >= 9.95) return Math.round(mb) + "M"
+    if (kb >= 999.5) return mb.toFixed(1) + "M"
     if (kb >= 1) return Math.round(kb) + "K"
     return bytes > 0 ? kb.toFixed(1) + "K" : "0K"
   }
