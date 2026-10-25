@@ -45,8 +45,9 @@ when there is no battery), `battery` (the battery `status` string).
 cd ~/.config/omarchy/plugins/petrskuta.sysstats
 ./stats.sh 1                           # check the data source; stop with Ctrl-C
 omarchy plugin validate .              # check manifest.json against the schema
-# Saving a file hot-reloads the widget. If it does not:
-omarchy-shell shell rescanPlugins
+# Saving a file logs "Local plugin changed, reloading", but the running bar can
+# keep the old code even after rescanPlugins. Restart the shell, then check the bar:
+omarchy-restart-shell
 journalctl --user --since "-1min" | grep -iE "sysstats|warn|error"   # QML errors
 grim /tmp/full.png                     # screenshot of the active screen, to check visually
 ```
