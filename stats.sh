@@ -3,6 +3,7 @@
 INTERVAL=${1:-2}
 
 gpu=$(ls -d /sys/class/drm/card*/gt/gt0 2>/dev/null | head -1)
+amdgpu=$(ls /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | head -1)
 bat=$(ls -d /sys/class/power_supply/BAT* 2>/dev/null | head -1)
 
 cpu_sample() { read -r _ u n s i w q sq st _ < /proc/stat; echo "$((u+n+s+i+w+q+sq+st)) $((i+w))"; }
@@ -27,13 +28,17 @@ while sleep "$INTERVAL"; do
   ram=$(( 100 * (mtotal - mavail) / mtotal ))
   ramused=$(( (mtotal - mavail) / 1024 ))
 
-  # GPU busy = share of wall time not spent in RC6 idle.
+  # Intel GPU busy = share of wall time not spent in RC6 idle.
   gpupct=-1
   if [ -n "$gpu" ]; then
     rc1=$(cat "$gpu/rc6_residency_ms")
     gpupct=$(( 100 - 100 * (rc1 - rc0) / dt ))
     (( gpupct < 0 )) && gpupct=0; (( gpupct > 100 )) && gpupct=100
     rc0=$rc1
+  elif [ -n "$amdgpu" ]; then
+    # AMD reports busy percent directly.
+    gpupct=$(cat "$amdgpu" 2>/dev/null)
+    [[ $gpupct =~ ^[0-9]+$ ]] || gpupct=-1
   fi
 
   down=$(( (rx1 - rx0) * 1000 / dt ))

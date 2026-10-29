@@ -59,7 +59,6 @@ Bump `version` in `manifest.json` for any change people would notice, then commi
 
 ## Ideas not done yet
 
-- AMD GPU via `/sys/class/drm/card*/device/gpu_busy_percent`.
 - NVIDIA GPU via `nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits`.
 - Settings in `shell.json`, such as the interval or which items to show, read through the bar widget config API.
 - Colour a value when it crosses a threshold, for example CPU above 90%.
